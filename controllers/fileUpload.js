@@ -20,7 +20,7 @@ const fileUpload = async(req,res)=>{
     }
     const oldPath = file.path;
     const newPath = path.join(__dirname, '../input.csv');
-    await fsPromises.rename(oldPath, newPath);
+    await fsPromises.copyFile(oldPath, newPath);
     const fileWithExtra = await fsPromises.readFile(newPath);
     const fileWithExtraArr = fileWithExtra.toString().split('\n');
     fileWithExtraArr.pop();
