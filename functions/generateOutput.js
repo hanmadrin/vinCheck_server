@@ -1,19 +1,23 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const fsPromises = require('fs').promises;
 const csvTOjson = require('csvtojson');
 const { Parser } = require('json2csv');
-const scrapData = require('./functions/scrapeData');
-const scrapData = require('./scrapeData');
+const VIN = require('../models/VIN');
+const path = require('path');
 const generateOutput= async()=>{
-    const jsonData = await csvTOjson().fromFile(path.join(__dirname, 'input.csv'));
+    const jsonData = await csvTOjson().fromFile(path.join(__dirname, '../input.csv'));
     const vins = jsonData.map(el=>el['Vin#']);
     const keys = Object.keys(jsonData[0]);
 
-    const values = await scrapData({vins});
     for(let i=0;i<vins.length;i++){
-        jsonData[i]['Accident Count'] = values[vins[i]]['accidentCount'];
-        jsonData[i]['Brands Count'] = values[vins[i]]['titleBrands'];
-        jsonData[i]['VIN Status'] = values[vins[i]]['status'];
+        const vinDb = await VIN.findOne({where:{vin: vins[i]}});
+        if(vinDb==null){
+            jsonData[i]['Accident Count'] = vinDb[0]['accident_count'];
+            jsonData[i]['Problems Count'] = vinDb[0]['problem_count'];
+            jsonData[i]['VIN Status'] = vinDb[0]['status'];
+        }
+        
     }
 
     const fields = [];
@@ -22,13 +26,14 @@ const generateOutput= async()=>{
             fields.push(keys[i]);
             fields.push('VIN Status')
             fields.push('Accident Count');
-            fields.push('Brands Count');
+            fields.push('Problems Count');
         }else{
             fields.push(keys[i]);
         }
     }
     const json2csvParser = new Parser({ fields });
     const csv = json2csvParser.parse(jsonData);
-    fs.writeFileSync(path.join(__dirname, 'output.csv'), csv);    
+    await fsPromises.writeFile(path.join(__dirname, '../output.csv'), csv);
+    await fsPromises.unlink(path.join(__dirname, '../input.csv'));
 };
 module.exports = generateOutput;

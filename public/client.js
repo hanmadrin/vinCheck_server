@@ -3,7 +3,7 @@ import app from './views/app.js';
 import view from './views/view.js';
 import loader from './views/loader.js';
 import toggleLoader from './functions/toggleLoader.js';
-changeTitle('Sheikhcloud');
+changeTitle('VinCheck');
 changeFavicon('/public/icons/favicon.ico');
 app.setup();
 loader();

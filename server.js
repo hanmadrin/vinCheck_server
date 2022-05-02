@@ -9,6 +9,7 @@ const server = http.createServer(app);
 app.use(cookieParser());
 app.use(formidable());
 app.use('/public',express.static('./public'));
+app.use('/api', require('./routes/api'))
 app.use('/', function(req, res) {
     res.sendFile('public/index.html', {root: __dirname});
 });
