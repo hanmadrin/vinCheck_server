@@ -31,6 +31,7 @@
     "pdfmake": "^0.2.5",
     "puppeteer": "^13.6.0",
     "puppeteer-core": "^13.7.0",
-    "sequelize": "^6.14.0"
+    "sequelize": "^6.14.0",
+    "shelljs": "^0.8.5"
   }
 }
