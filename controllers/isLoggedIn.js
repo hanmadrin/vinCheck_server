@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const isLoggedIn = (req, res) => {
+    res.json({});
+    return null;
     const authkey = req.cookies.authkey;
     if(authkey){
         User.findOne({

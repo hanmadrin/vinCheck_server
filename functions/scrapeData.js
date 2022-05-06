@@ -7,6 +7,10 @@ const scrapData = async ()=> {
     const browser = await puppeteer.launch({ 
         headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        defaultViewport: {
+            width: 1920,
+            height: 1080
+        }
     });
     try{
         const page = await browser.newPage();
@@ -42,19 +46,25 @@ const scrapData = async ()=> {
                     accidentCount = '0';
                 }
                 const invalid = await page.$('#singleVin p.alert.alert-danger');
-                const titleBrands = await page.evaluate(()=>{
+                const titleBrands = await page.evaluate(async()=>{
                     const tableBody = document.querySelectorAll('.title-brand-table > .table_icon > .rTableRow');
 
                     let brandsCount = 0;
                     for(let i=0; i<tableBody.length; i++){
-                        if(tableBody[i].querySelector('img').getAttribute('src') != 'https://www.autocheck.com/reportservice/report/fullReport/img/check-icon.svg'){
+                        console.log(tableBody[i].querySelector('img').getAttribute('src')); 
+                        if(tableBody[i].querySelector('img').getAttribute('src') !== 'https://www.autocheck.com/reportservice/report/fullReport/img/check-icon.svg'){
                             brandsCount++;
                         }
                     }
+                    // const sleep = async(milliseconds) => {
+                    //     return new Promise(resolve => setTimeout(resolve, milliseconds))
+                    // }
+                    // await sleep(10000);
                     return brandsCount;
                 });
+                // console.log(titleBrands);
                 const values = {
-                    accident_count: accidentCount,
+                    accident_count: invalid==null?accidentCount:'',
                     problem_count: invalid==null?titleBrands:'',
                     status: invalid==null?'success':'invalid'
                 };

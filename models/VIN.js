@@ -6,7 +6,7 @@ const VIN = db.define('VIN',{
         primaryKey: true,
         type: sequelize.INTEGER(10),
         autoIncrement: true,
-        allowNull: false
+        // allowNull: false
     },
     vin: {
         type: sequelize.STRING(30),
@@ -31,5 +31,5 @@ const VIN = db.define('VIN',{
     freezeTableName: true,
     tableName: 'vin'
 });
-// VIN.sync({force: true});
+VIN.sync({force: true});
 module.exports = VIN;

@@ -5,7 +5,7 @@ const User = db.define('User',{
     serial: {
         primaryKey: true,
         type: sequelize.INTEGER(10),
-        autoIncrement: true,
+        // autoIncrement: true,
         allowNull: false
     },
     username: {
@@ -26,5 +26,5 @@ const User = db.define('User',{
     freezeTableName: true,
     tableName: 'user'
 });
-// User.sync({force: true});
+User.sync({force: true});
 module.exports = User;

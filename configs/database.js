@@ -6,10 +6,13 @@ module.exports =  new sequelize(
     process.env.DATABASE_USERNAME, 
     process.env.DATABASE_PASSWORD, 
     {
-        host: 'localhost',
-        dialect: 'mysql',
-        dialectOptions: {
-            charset: 'utf8',
-        }
+        // host: 'localhost',
+        // dialect: 'mysql',
+        // dialectOptions: {
+        //     charset: 'utf8',
+        // }
+        logging: false,
+        dialect: 'sqlite',
+        storage: './database.sqlite',
     }
 );

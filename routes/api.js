@@ -13,7 +13,7 @@ const puppeteer = require('puppeteer');
 
 router.post('/login', login);
 router.get('/isLoggedIn',isLoggedIn);
-router.use('/',authMiddleware);
+// router.use('/',authMiddleware);
 router.get('/logout',logout);
 
 router.post('/reset',reset);
