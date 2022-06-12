@@ -44,13 +44,16 @@ const fileUpload = async(req,res)=>{
             await fsPromises.unlink(newPath);
             return null; 
         }
+        if(jsonData[0]['Mileage']==undefined){
+            res.status(201).json({data:'Change File : "Mileage" not found',type:'warning'});
+            await fsPromises.unlink(newPath);
+            return null;  
+        }
     }
 
-    const vins = jsonData.map(el=>{return {vin: el['Vin#']}});
+    const vins = jsonData.map(el=>{return {vin: el['Vin#'],mileage: el['Mileage']}});
     await VIN.bulkCreate(vins);
     scrapData();
     res.json({vins});
-    
-    
 };
 module.exports = fileUpload;

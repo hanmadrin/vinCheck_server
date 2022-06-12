@@ -31,9 +31,9 @@ const header = () => {
         }
     });
     const buttonHolder = document.createElement('div');
-    buttonHolder.className = style.neoHeader.buttonHolder.join(' ');
-    buttonHolder.append(reset,logout);
-
+    // buttonHolder.className = style.neoHeader.buttonHolder.join(' ');
+    // buttonHolder.append(reset,logout);
+    buttonHolder.append(reset);
     neoHeader.append(logo,buttonHolder);
     return neoHeader;
 };

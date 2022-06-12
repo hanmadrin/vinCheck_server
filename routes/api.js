@@ -5,6 +5,7 @@ const logout = require('../controllers/logout');
 const authMiddleware = require('../controllers/authMiddleware');
 const fileUpload = require('../controllers/fileUpload');
 const situation = require('../controllers/situation');
+const restart = require('../controllers/restart');
 const reset = require('../controllers/reset');
 const download = require('../controllers/download');
 const router = express.Router();
@@ -17,6 +18,7 @@ router.get('/isLoggedIn',isLoggedIn);
 router.get('/logout',logout);
 
 router.post('/reset',reset);
+router.post('/restart',restart);
 router.get('/situation',situation)
 router.post('/fileUpload',fileUpload);
 router.get('/download',download);

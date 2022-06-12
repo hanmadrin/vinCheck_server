@@ -26,10 +26,35 @@ const VIN = db.define('VIN',{
         allowNull: false,
         defaultValue: 0
     },
+    mileage:{
+        type: sequelize.STRING(10),
+        allowNull: false,
+        defaultValue: ''
+    },
+    kbb_year:{
+        type: sequelize.STRING(10),
+        allowNull: false,
+        defaultValue: ''
+    },
+    kbb_vehicle:{
+        type: sequelize.STRING(100),
+        allowNull: false,
+        defaultValue: ''
+    },
+    kbb_engine_trim:{
+        type: sequelize.STRING(100),
+        allowNull: false,
+        defaultValue: ''
+    },
+    kbb_tradeInValue:{
+        type: sequelize.STRING(10),
+        allowNull: false,
+        defaultValue: ''
+    }
 },{
     timestamps: false,
     freezeTableName: true,
     tableName: 'vin'
 });
-VIN.sync({force: true});
+VIN.sync();
 module.exports = VIN;

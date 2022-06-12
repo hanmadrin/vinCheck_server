@@ -17,6 +17,11 @@ const generateOutput= async()=>{
             jsonData[i]['Accident Count'] = `${vinDb.dataValues.accident_count}`;
             jsonData[i]['Problems Count'] = `${vinDb.dataValues.problem_count}`;
             jsonData[i]['VIN Status'] = vinDb.dataValues.status;
+            jsonData[i]['KBB Year'] = vinDb.dataValues.kbb_year;
+            jsonData[i]['KBB Vehicle'] = vinDb.dataValues.kbb_vehicle;
+            jsonData[i]['KBB Engine_Trim'] = vinDb.dataValues.kbb_engine_trim;
+            jsonData[i]['KBB Trade Value'] = vinDb.dataValues.kbb_tradeInValue;
+
         }
     }
     // console.log(jsonData);
@@ -27,6 +32,10 @@ const generateOutput= async()=>{
             fields.push('VIN Status')
             fields.push('Accident Count');
             fields.push('Problems Count');
+            fields.push('KBB Year');
+            fields.push('KBB Vehicle');
+            fields.push('KBB Engine_Trim');
+            fields.push('KBB Trade Value');
         }else{
             fields.push(keys[i]);
         }
