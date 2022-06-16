@@ -72,13 +72,14 @@ const home = async () => {
                         if(response.status===200){
                             const dynData = await response.json();
                             if(dynData.leftVin!==0){
-                                progressTitle.innerText = `${dynData.doneVin}/${dynData.totalVin}`;
+                                // progressTitle.innerText = `${dynData.doneVin}/${dynData.totalVin}`;
+                                progressTitle.innerText = dynData.leftTime;
                             }else{
                                 clearInterval(interval);
                                 await view();
                             }
                         }
-                    },5000);
+                    },1000);
                     progressTitle.innerText = `${data.doneVin}/${data.totalVin}`;
                     progressTitle.className = style.home.neoDynamicContent.progressTitle.join(' ');
                     const progress = document.createElement('div');

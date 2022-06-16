@@ -3,8 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const VIN = require('../models/VIN');
 const generateOutput = require('./generateOutput');
-const scrapData = async ()=> {
-    const values = {};
+const scrapeDataNew = async() => {
+    
     const sleep = (ms) => {return new Promise(resolve => setTimeout(resolve, ms));}
     const browser = await puppeteer.launch({ 
         headless: true,
@@ -27,15 +27,11 @@ const scrapData = async ()=> {
         await login.click();
         await vincheck.waitForNavigation();
 
-        const kbb = await browser.newPage();
-        await kbb.evaluateOnNewDocument(async() => {
-            delete navigator.__proto__.webdriver;
-        });
-        await sleep(1000);
-        await vincheck.bringToFront();
+        
         const vins = await VIN.findAll({where:{status: null}});
         if(vins.length !== 0){
             for(let i = 0; i < vins.length; i++){
+                const values = {};
                 console.log(`${vins[i].vin}: processing started`);
                 const form = await vincheck.$('#singleVin');
                 const vin = await form.$('#vin');
@@ -70,19 +66,23 @@ const scrapData = async ()=> {
                             brandsCount++;
                         }
                     }
-                    // const sleep = async(milliseconds) => {
-                    //     return new Promise(resolve => setTimeout(resolve, milliseconds))
-                    // }
-                    // await sleep(10000);
                     return brandsCount;
                 });
                 values.accident_count =invalid==null?accidentCount:'';
                 values.problem_count = invalid==null?titleBrands:'';
                 values.status = invalid==null?'success':'invalid';
-                console.log(`${vins[i].vin}: AUTOCHECK : Data Scraped`);
-                await sleep(1000);
-                console.log(`${vins[i].vin}: KBB : Processing Started`);
-                await kbb.bringToFront();
+                await VIN.update(values,{where:{vin: vins[i].vin}});
+                await vincheck.goto('https://www.autocheck.com/members/singleVinSearch.do');
+                await vincheck.waitForSelector('#singleVin');                  
+            }
+
+            for(let i = 0; i < vins.length; i++){
+                const values = {};
+                const kbb = vincheck;
+                await kbb.evaluateOnNewDocument(async() => {
+                    delete navigator.__proto__.webdriver;
+                });
+                
                 let reTry = true;
                 while(reTry){
                     try{
@@ -103,6 +103,7 @@ const scrapData = async ()=> {
                         console.log(`${vins[i].vin}: KBB : Choosing  Engine & Transmission`);
                         if(invalid!=null){
                             console.log(`${vins[i].vin}: KBB : Invalid vin`);
+                                values.kbb_status = 'invalid';
                                 values.kbb_year= '';
                                 values.kbb_vehicle= '';
                                 values.kbb_engine_trim= '';
@@ -181,26 +182,17 @@ const scrapData = async ()=> {
                             const vehicle = vehicleDetails.replace(year, '').trim();
                             const engineTrim = await (await kbb.$('.css-1ceovnz-HeaderAndLabel p')).evaluate(el=>el.innerText);
                             reTry = false;
+                            values.kbb_status = 'success';
                             values.kbb_year= year;
                             values.kbb_vehicle= vehicle;
                             values.kbb_engine_trim= engineTrim;
                             values.kbb_tradeInValue= tradeInValue;
+                            await VIN.update(values,{where:{vin: vins[i].vin}});
                         }
                     }catch(e){
                         console.log(`${vins[i].vin}: KBB : Attempt failed. Will Try again!`);
                     }
                 }
-                await sleep(1000);
-                console.log(`${vins[i].vin}: AUTOCHECK : Going back to vinchecker`);
-                await vincheck.bringToFront();
-                // const values = {
-                //     accident_count: invalid==null?accidentCount:'',
-                //     problem_count: invalid==null?titleBrands:'',
-                //     status: invalid==null?'success':'invalid'
-                // };
-                await VIN.update(values,{where:{vin: vins[i].vin}});
-                await vincheck.goto('https://www.autocheck.com/members/singleVinSearch.do');
-                await vincheck.waitForSelector('#singleVin');  
             }
         }
     }catch(err){
@@ -212,14 +204,6 @@ const scrapData = async ()=> {
             await generateOutput();
         }
     }
-    
-    
-       
-        
-        
-       
-            
 
-            
 };
-module.exports = scrapData;
+module.exports = scrapeDataNew;

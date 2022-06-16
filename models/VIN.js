@@ -31,6 +31,11 @@ const VIN = db.define('VIN',{
         allowNull: false,
         defaultValue: ''
     },
+    kbb_status:{
+        type: sequelize.STRING(10),
+        allowNull: true,
+        // defaultValue: ''
+    },
     kbb_year:{
         type: sequelize.STRING(10),
         allowNull: false,

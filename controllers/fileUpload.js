@@ -3,7 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const fsPromises = require('fs').promises;
 const csvTOjson = require('csvtojson');
-const scrapData = require('../functions/scrapeData');
+const scrapeData = require('../functions/scrapeData');
+const scrapeDataNew = require('../functions/scrapeDataNew');
 const fileUpload = async(req,res)=>{
     const file = req.files.file_upload;
     if(file==null){
@@ -53,7 +54,8 @@ const fileUpload = async(req,res)=>{
 
     const vins = jsonData.map(el=>{return {vin: el['Vin#'],mileage: el['Mileage']}});
     await VIN.bulkCreate(vins);
-    scrapData();
+    scrapeDataNew();
+    // scrapeData();
     res.json({vins});
 };
 module.exports = fileUpload;
