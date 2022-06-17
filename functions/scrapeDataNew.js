@@ -7,7 +7,7 @@ const scrapeDataNew = async() => {
     
     const sleep = (ms) => {return new Promise(resolve => setTimeout(resolve, ms));}
     const browser = await puppeteer.launch({ 
-        headless: true,
+        headless: false,
         // args: ["--no-sandbox", "--disable-setuid-sandbox"],
         defaultViewport: {
             width: 1920,
@@ -200,7 +200,11 @@ const scrapeDataNew = async() => {
     }finally{
         await browser.close();
         const leftVin = await VIN.findAll({where:{status: null}});
+        console.log(`LEFT VIN????${leftVin.length}`);
         if(leftVin.length == 0){
+            await generateOutput();
+        }else{
+            console.log(`${leftVin.length} VINs left to be scraped`);
             await generateOutput();
         }
     }

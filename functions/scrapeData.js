@@ -7,7 +7,7 @@ const scrapData = async ()=> {
     const values = {};
     const sleep = (ms) => {return new Promise(resolve => setTimeout(resolve, ms));}
     const browser = await puppeteer.launch({ 
-        headless: true,
+        headless: false,
         // args: ["--no-sandbox", "--disable-setuid-sandbox"],
         defaultViewport: {
             width: 1920,

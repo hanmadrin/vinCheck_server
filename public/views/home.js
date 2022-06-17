@@ -79,8 +79,8 @@ const home = async () => {
                                 await view();
                             }
                         }
-                    },1000);
-                    progressTitle.innerText = `${data.doneVin}/${data.totalVin}`;
+                    },5000);
+                    progressTitle.innerText = `${data.doneVin}/${data.totalVin} ${data.leftTime}`;
                     progressTitle.className = style.home.neoDynamicContent.progressTitle.join(' ');
                     const progress = document.createElement('div');
                     progress.className = style.home.neoDynamicContent.progress.join(' ');
@@ -105,6 +105,7 @@ const home = async () => {
                     neoDynamicContent.append(title,inputHolder);
                     return neoDynamicContent;
                 }else{
+                    console.log(`${!data.inputFileExists}  ${data.outputFileExists}  ${data.leftVin==0}`)
                     const title = document.createElement('h4');
                     title.className = style.home.neoDynamicContent.title.join(' ');
                     const inputHolder = document.createElement("div");

@@ -22,6 +22,7 @@ const situation = async (req,res)=>{
     const finalDoneVin = Math.floor(doneVin * 0.3 + doneKbb * 0.7);
 
     const leftTime = `${Math.floor((leftVin * 7 + leftKbb * 23)/3600)} hour  ${Math.floor(((leftVin * 7 + leftKbb * 23)%3600)/60)} min  ${Math.floor((leftVin * 7 + leftKbb * 23)%60)} sec`;
-    res.json({inputFileExists,outputFileExists,leftVin: (totalVin-finalDoneVin),totalVin,doneVin:finalDoneVin,leftTime});
+    
+    res.json({inputFileExists,outputFileExists,leftVin,totalVin,doneVin:finalDoneVin,leftTime});
 };
 module.exports = situation;
