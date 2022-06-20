@@ -39,10 +39,13 @@ const style = {
         notification:['text-white','p-3','border-radius-5px']
     },
     neoHeader:{
-        main: ['bg-info','d-flex','justify-content-between','p-2'],
+        main: ['bg-info','d-flex','justify-content-between','p-2','position-relative'],
         logo: ['w-40px'],
         logout: ['btn','p-2'],
+        time: ['text-white','p-2','position-absolute','top-50','start-50','translate-middle'],
         reset: ['btn','btn-danger','p-2'],
+        restart: ['btn','btn-warning','p-2','mr-10px'],
+        download: ['btn','btn-success','p-2','mr-10px'],
         buttonHolder: ['d-flex','justify-content-between','w-200px']
     },
 };

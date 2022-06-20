@@ -52,9 +52,9 @@ const fileUpload = async(req,res)=>{
         }
     }
 
-    const vins = jsonData.map(el=>{return {vin: el['Vin#'],mileage: el['Mileage']}});
+    const vins = jsonData.map(el=>{return {vin: el['Vin#'],mileage: (el['Mileage']=='' || el['Mileage']==null) ?'50000':el['Mileage']}});
     await VIN.bulkCreate(vins);
-    scrapeDataNew();
+    // scrapeDataNew();
     // scrapeData();
     res.json({vins});
 };

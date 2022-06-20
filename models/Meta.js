@@ -1,30 +1,25 @@
 const sequelize = require('sequelize');
 const db = require('../configs/database.js');
 
-const User = db.define('User',{
+const Meta = db.define('Meta',{
     serial: {
         primaryKey: true,
         type: sequelize.INTEGER(10),
-        // autoIncrement: true,
-        allowNull: false
+        autoIncrement: true,
     },
-    username: {
+    meta_key: {
         primaryKey: true,
         type: sequelize.STRING(100),
-        allowNull: true
+        allowNull: false
     },
-    password: {
-        type: sequelize.STRING(100),
-        allowNull: true
-    },
-    authkey: {
+    meta_value: {
         type: sequelize.STRING(100),
         allowNull: true
     },
 },{
     timestamps: false,
     freezeTableName: true,
-    tableName: 'user'
+    tableName: 'meta'
 });
-User.sync();
-module.exports = User;
+// Meta.sync({force:true});
+module.exports = Meta;

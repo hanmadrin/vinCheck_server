@@ -42,7 +42,8 @@ const generateOutput= async()=>{
     }
     const json2csvParser = new Parser({ fields });
     const csv = json2csvParser.parse(jsonData);
-    await fsPromises.writeFile(path.join(__dirname, '../output.csv'), csv);
-    await fsPromises.unlink(path.join(__dirname, '../input.csv'));
+    return csv;
+    // await fsPromises.writeFile(path.join(__dirname, '../output.csv'), csv);
+    // await fsPromises.unlink(path.join(__dirname, '../input.csv'));
 };
 module.exports = generateOutput;
