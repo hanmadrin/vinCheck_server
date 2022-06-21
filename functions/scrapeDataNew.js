@@ -25,26 +25,26 @@ const scrapeDataNew = async(browserPage) => {
                 const updatedVin = await VIN.findOne({where:{vin: vins[i].dataValues.vin}});
                 if(updatedVin.status!='skipped'){
                     const values = {};
-                    console.log(`${vins[i].vin}: processing started`);
+                    //console.log(`${vins[i].vin}: processing started`);
                     const form = await browserPage.$('#singleVin');
                     const vin = await form.$('#vin');
                     const submit = await form.$('[name="fullButton"]');
-                    console.log(`${vins[i].vin}: AUTOCHECK : Typing vin`);
+                    //console.log(`${vins[i].vin}: AUTOCHECK : Typing vin`);
                     await vin.type(vins[i].vin);
-                    console.log(`${vins[i].vin}: AUTOCHECK : Submitting vin`);
+                    //console.log(`${vins[i].vin}: AUTOCHECK : Submitting vin`);
                     await submit.click();
                     await browserPage.waitForNavigation();
-                    console.log(`${vins[i].vin}: AUTOCHECK : Waiting for info page to load`);
+                    //console.log(`${vins[i].vin}: AUTOCHECK : Waiting for info page to load`);
                     let accidentCount = '';
                     const accidentImg = await browserPage.$('[src="https://www.autocheck.com/reportservice/report/fullReport/img/accident-found.svg"]');
-                    console.log(`${vins[i].vin}: AUTOCHECK : Checking for accident`);
+                    //console.log(`${vins[i].vin}: AUTOCHECK : Checking for accident`);
                     if(accidentImg!=null){
                         accidentCount = await accidentImg.evaluate(el=>{
                             const accidentHolder = el.parentElement.parentElement;
                             const accidentCount = accidentHolder.querySelector('.accident-count');
                             return accidentCount.innerText;
                         });
-                        console.log(`${vins[i].vin}: AUTOCHECK : Accident found`);
+                        //console.log(`${vins[i].vin}: AUTOCHECK : Accident found`);
                     }else{
                         accidentCount = '0';
                     }
@@ -54,7 +54,7 @@ const scrapeDataNew = async(browserPage) => {
         
                         let brandsCount = 0;
                         for(let i=0; i<tableBody.length; i++){
-                            console.log(tableBody[i].querySelector('img').getAttribute('src')); 
+                            //console.log(tableBody[i].querySelector('img').getAttribute('src')); 
                             if(tableBody[i].querySelector('img').getAttribute('src') !== 'https://www.autocheck.com/reportservice/report/fullReport/img/check-icon.svg'){
                                 brandsCount++;
                             }
@@ -89,19 +89,19 @@ const scrapeDataNew = async(browserPage) => {
                             await browserPage.goto('https://www.kbb.com/whats-my-car-worth/');
                             
         
-                            console.log(`${vins[i].vin}: KBB : Typing vin`);
+                            //console.log(`${vins[i].vin}: KBB : Typing vin`);
                             await browserPage.waitForSelector('#vinNumberInput',{timeout:5000});
                             const vinInput = await browserPage.$('#vinNumberInput input');
                             const submit = await browserPage.$('button[data-testid="vinSubmitBtn"]');
                             
                             await vinInput.type(vins[i].vin);
-                            console.log(`${vins[i].vin}: KBB : Submittion vin`);
+                            //console.log(`${vins[i].vin}: KBB : Submittion vin`);
                             await submit.click();
                             await sleep(1000);
                             const invalid = await browserPage.$('#vinNumberInput span.css-tiv2r2-StyledError.e2plhlo1');
-                            console.log(`${vins[i].vin}: KBB : Choosing  Engine & Transmission`);
+                            //console.log(`${vins[i].vin}: KBB : Choosing  Engine & Transmission`);
                             if(invalid!=null){
-                                console.log(`${vins[i].vin}: KBB : Invalid vin`);
+                                //console.log(`${vins[i].vin}: KBB : Invalid vin`);
                                     values.kbb_status = 'invalid';
                                     values.kbb_year= '';
                                     values.kbb_vehicle= '';
@@ -109,7 +109,7 @@ const scrapeDataNew = async(browserPage) => {
                                     values.kbb_tradeInValue= '';
                                     reTry = false;
                             }else{
-                                console.log(`${vins[i].vin}: KBB : Choosing  category`);
+                                //console.log(`${vins[i].vin}: KBB : Choosing  category`);
                                 await browserPage.waitForSelector('#category',{timeout:5000});
                                 const engine = await browserPage.$('#engine');
                                 const transmission = await browserPage.$('#transmission');
@@ -133,7 +133,7 @@ const scrapeDataNew = async(browserPage) => {
                                     }
                                 }
         
-                                console.log(`${vins[i].vin}: KBB : Entering Mileage`);
+                                //console.log(`${vins[i].vin}: KBB : Entering Mileage`);
                                 await browserPage.waitForSelector('[data-lean-auto="mileageInput"]',{timeout:5000});
                                 const mileageInput = await browserPage.$('[data-lean-auto="mileageInput"]');
                                 const zipCodeInput = await browserPage.$('[data-lean-auto="zipcodeInput"]');
@@ -142,11 +142,11 @@ const scrapeDataNew = async(browserPage) => {
                                 await sleep(1000);
                                 const firstPageNextButton = await browserPage.$('button[data-cy="vinLpNext"]');
                                 await firstPageNextButton.click();
-                                console.log(`${vins[i].vin}: KBB : Choosing  Standard Price`);
+                                //console.log(`${vins[i].vin}: KBB : Choosing  Standard Price`);
                                 await browserPage.waitForSelector('#pricestandard',{timeout:5000});
                                 const priceStandard = await browserPage.$('#pricestandard');
                                 priceStandard.click();
-                                console.log(`${vins[i].vin}: KBB : Choosing  Color`);
+                                //console.log(`${vins[i].vin}: KBB : Choosing  Color`);
                                 await browserPage.waitForSelector('[data-lean-auto="colorPicker_White"]',{timeout:5000});
                                 const colorPickerWhite = await browserPage.$('[data-lean-auto="colorPicker_White"]');
                                 await colorPickerWhite.click();
@@ -154,27 +154,27 @@ const scrapeDataNew = async(browserPage) => {
                                 await secondPageNextButton.click();
                         
                                 try{
-                                    console.log(`${vins[i].vin}: KBB : Choosing Default Price Options`);
+                                    //console.log(`${vins[i].vin}: KBB : Choosing Default Price Options`);
                                     await browserPage.waitForSelector('[data-lean-auto="next-btn"]',{timeout:5000});
                                     const thirdPageNextButton = await browserPage.$('[data-lean-auto="next-btn"]');
                                     await thirdPageNextButton.click();
                                 }catch(e){
-                                    console.log(`${vins[i].vin}: KBB : No Default Price Options`);
+                                    //console.log(`${vins[i].vin}: KBB : No Default Price Options`);
                                 }
-                                console.log(`${vins[i].vin}: KBB : Choosing condition "Good"`);
+                                //console.log(`${vins[i].vin}: KBB : Choosing condition "Good"`);
                                 await browserPage.waitForSelector('[data-lean-auto="good"]',{timeout:5000});
                                 const good = await browserPage.$('[data-lean-auto="good"]');
                                 await good.click();
                                 const fourthPageNextButton = await browserPage.$('button[data-lean-auto="optionsNextButton"]');
                                 await fourthPageNextButton.click();
-                                console.log(`${vins[i].vin}: KBB : Clicking Quick Link`);
+                                //console.log(`${vins[i].vin}: KBB : Clicking Quick Link`);
                                 await browserPage.waitForSelector('[data-lean-auto="quick-link"]',{timeout:5000});
                                 const quickLink = await browserPage.$('[data-lean-auto="quick-link"]');
                                 await quickLink.click();
-                                console.log(`${vins[i].vin}: KBB : waiting for trande value to appear`);
+                                //console.log(`${vins[i].vin}: KBB : waiting for trande value to appear`);
                                 await browserPage.waitForSelector('[name="tradeInValue"]',{timeout:5000});
                                 await sleep(1000);
-                                console.log(`${vins[i].vin}: KBB : Scraping Data`);
+                                //console.log(`${vins[i].vin}: KBB : Scraping Data`);
                                 const tradeInValue = await (await browserPage.$('[name="tradeInValue"]')).evaluate(el=>el.value);
                                 const vehicleDetails = await (await browserPage.$('.css-1ceovnz-HeaderAndLabel h1')).evaluate(el=>el.innerText);
                                 const year = vehicleDetails.split(' ')[0];
@@ -197,14 +197,14 @@ const scrapeDataNew = async(browserPage) => {
                                 await VIN.update(values,{where:{vin: vins[i].vin}});
                                 reTry = false;
                             }
-                            console.log(`${vins[i].vin}: KBB : Attempt failed. Will Try again!`);
+                            //console.log(`${vins[i].vin}: KBB : Attempt failed. Will Try again!`);
                         }
                     }
                 }
             }
         }
     }catch(e){
-        console.log('error on scraping');
+        //console.log('error on scraping');
     }
 
 

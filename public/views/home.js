@@ -17,7 +17,7 @@ const home = async () => {
             contentHolder.className = style.home.contentHolder.join(' ');
             
             const setupData = async (vins)=>{
-                console.log('inside setupData');
+                //console.log('inside setupData');
                 if(vins==null){
                     const response = await fetch('/api/situation',{method:'GET'});
                     if(response.status===200){
@@ -174,6 +174,8 @@ const home = async () => {
         }else{
             notify({data:'You are not allowed to access this page',type:'danger'});
         }
-    }catch(err){console.log(err)};
+    }catch(err){
+        //console.log(err)
+    };
 }
 export default home;

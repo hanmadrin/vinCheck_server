@@ -30,6 +30,8 @@ router.post('/fileUpload',fileUpload);
 router.get('/download',download);
 
 
-router.use('/',(req,res)=>{console.log('wrong api url');res.sendStatus(404);});
+router.use('/',(req,res)=>{
+    //console.log('wrong api url');res.sendStatus(404);
+});
 
 module.exports=router;

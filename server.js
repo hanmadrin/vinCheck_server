@@ -31,7 +31,7 @@ const puppeteer = require('puppeteer');
             const page = await browser.newPage();
             scrapeDataNew(page);
         }catch(e) { 
-            console.log('error');
+            //console.log('error');
             await sleep(2000);
         }
     })

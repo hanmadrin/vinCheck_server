@@ -6,14 +6,14 @@ const changeFavicon = (iconUrl) => {
         link.href = iconUrl;
         document.getElementsByTagName('head')[0].appendChild(link);
     } catch (error) {
-        console.log(error);
+        //console.log(error);
     }
 }
 const changeTitle = (title) => {
     try {
         document.title = title;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
     }
 }
 const sleep = async (ms) => {

@@ -15,7 +15,7 @@ const loader = ()=>{
         }
         return document.getElementById('neoLoader');
     }catch(error){
-        console.log(error);
+        //console.log(error);
     }
 }
 export default loader;

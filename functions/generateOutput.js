@@ -9,11 +9,11 @@ const generateOutput= async()=>{
     const jsonData = await csvTOjson().fromFile(path.join(__dirname, '../input.csv'));
     const vins = jsonData.map(el=>el['Vin#']);
     const keys = Object.keys(jsonData[0]);
-    // console.log(vins.length);
+    // //console.log(vins.length);
     for(let i=0;i<vins.length;i++){
         const vinDb = await VIN.findOne({where:{vin: vins[i]}});
         if(vinDb!=null){
-            // console.log(vinDb)
+            // //console.log(vinDb)
             jsonData[i]['Accident Count'] = `${vinDb.dataValues.accident_count}`;
             jsonData[i]['Problems Count'] = `${vinDb.dataValues.problem_count}`;
             jsonData[i]['VIN Status'] = vinDb.dataValues.status;
@@ -24,7 +24,7 @@ const generateOutput= async()=>{
 
         }
     }
-    // console.log(jsonData);
+    // //console.log(jsonData);
     const fields = [];
     for(let i=-0;i<keys.length;i++){
         if(keys[i]=='Vin#' && keys[i]!=='VIN Status' && keys[i]!=='Accident Count' && keys[i]!=='Title Brands'){
